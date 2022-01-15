@@ -233,8 +233,24 @@ namespace SuccubusClient
 				}
 				else
 				{
-					ViewModel.Collection.Add(InitIncubusContext(incubus));
+					if(incubus.cpu!=null)
+						ViewModel.Collection.Add(InitIncubusContext(incubus));
 				}
+			}
+
+			List<Data> DeleteData = new List<Data>();
+			foreach (Data data in ViewModel.Collection)
+			{
+				Incubus FindIncubus = IncubusList.FirstOrDefault(x => x.Name == data.Name);
+				if (FindIncubus==null)
+				{
+					DeleteData.Add(data);
+				}
+			}
+
+			foreach(Data data in DeleteData)
+			{
+				ViewModel.Collection.Remove(data);
 			}
 		}
 
@@ -258,248 +274,257 @@ namespace SuccubusClient
 
 			PC.Children.Add(MAC);
 
-			Data CPU = new Data();
-			CPU.Name = "Процессор";
-			CPU.Value = incubus.cpu.Model;
-			CPU.Children = new List<Data>();
+			if (incubus.cpu != null) {
+				Data CPU = new Data();
+				CPU.Name = "Процессор";
+				CPU.Value = incubus.cpu.Model;
+				CPU.Children = new List<Data>();
 
-			Data CPUTemp = new Data();
-			CPUTemp.Name = "Температура";
-			CPUTemp.Children = new List<Data>();
+				Data CPUTemp = new Data();
+				CPUTemp.Name = "Температура";
+				CPUTemp.Children = new List<Data>();
 
-			if (incubus.cpu.Temperature != null)
-			{
-				for (int i = 0; i < incubus.cpu.Temperature.Values.Count; i++)
+				if (incubus.cpu.Temperature != null)
+				{
+					for (int i = 0; i < incubus.cpu.Temperature.Values.Count; i++)
+					{
+						Data temp = new Data();
+						temp.Name = "Core#" + i;
+						temp.Value = incubus.cpu.Temperature.Values[i];
+						temp.MaxValue = incubus.cpu.Temperature.MaxValues[i];
+						CPUTemp.Children.Add(temp);
+					}
+				}
+				else
 				{
 					Data temp = new Data();
-					temp.Name = "Core#" + i;
-					temp.Value = incubus.cpu.Temperature.Values[i];
-					temp.MaxValue = incubus.cpu.Temperature.MaxValues[i];
+					temp.Name = "Пусто";
+					temp.Value = "";
+					temp.MaxValue = "";
 					CPUTemp.Children.Add(temp);
 				}
-			}
-			else
-			{
-				Data temp = new Data();
-				temp.Name = "Пусто";
-				temp.Value = "";
-				temp.MaxValue = "";
-				CPUTemp.Children.Add(temp);
-			}
 
-			Data CPUClocks = new Data();
-			CPUClocks.Name = "Clocks";
-			CPUClocks.Children = new List<Data>();
+				Data CPUClocks = new Data();
+				CPUClocks.Name = "Clocks";
+				CPUClocks.Children = new List<Data>();
 
-			if (incubus.cpu.Clocks != null)
-			{
-				for (int i = 0; i < incubus.cpu.Clocks.Values.Count; i++)
+				if (incubus.cpu.Clocks != null)
+				{
+					for (int i = 0; i < incubus.cpu.Clocks.Values.Count; i++)
+					{
+						Data temp = new Data();
+						temp.Name = "Core#" + i;
+						temp.Value = incubus.cpu.Clocks.Values[i];
+						temp.MaxValue = incubus.cpu.Clocks.MaxValues[i];
+						CPUClocks.Children.Add(temp);
+					}
+				}
+				else
 				{
 					Data temp = new Data();
-					temp.Name = "Core#" + i;
-					temp.Value = incubus.cpu.Clocks.Values[i];
-					temp.MaxValue = incubus.cpu.Clocks.MaxValues[i];
+					temp.Name = "Пусто";
+					temp.Value = "";
+					temp.MaxValue = "";
 					CPUClocks.Children.Add(temp);
 				}
-			}
-			else
-			{
-				Data temp = new Data();
-				temp.Name = "Пусто";
-				temp.Value = "";
-				temp.MaxValue = "";
-				CPUClocks.Children.Add(temp);
-			}
 
-			Data CPULoad = new Data();
-			CPULoad.Name = "Load";
-			CPULoad.Children = new List<Data>();
+				Data CPULoad = new Data();
+				CPULoad.Name = "Load";
+				CPULoad.Children = new List<Data>();
 
-			if (incubus.cpu.Load != null)
-			{
-				for (int i = 0; i < incubus.cpu.Load.Values.Count; i++)
+				if (incubus.cpu.Load != null)
+				{
+					for (int i = 0; i < incubus.cpu.Load.Values.Count; i++)
+					{
+						Data temp = new Data();
+						temp.Name = "Core#" + i;
+						temp.Value = incubus.cpu.Load.Values[i];
+						temp.MaxValue = incubus.cpu.Load.MaxValues[i];
+						CPULoad.Children.Add(temp);
+					}
+				}
+				else
 				{
 					Data temp = new Data();
-					temp.Name = "Core#" + i;
-					temp.Value = incubus.cpu.Load.Values[i];
-					temp.MaxValue = incubus.cpu.Load.MaxValues[i];
+					temp.Name = "Пусто";
+					temp.Value = "";
+					temp.MaxValue = "";
 					CPULoad.Children.Add(temp);
 				}
-			}
-			else
-			{
-				Data temp = new Data();
-				temp.Name = "Пусто";
-				temp.Value = "";
-				temp.MaxValue = "";
-				CPULoad.Children.Add(temp);
-			}
 
 
-			Data CPUPowers = new Data();
-			CPUPowers.Name = "Powers";
-			CPUPowers.Children = new List<Data>();
+				Data CPUPowers = new Data();
+				CPUPowers.Name = "Powers";
+				CPUPowers.Children = new List<Data>();
 
-			if (incubus.cpu.Powers != null)
-			{
-				for (int i = 0; i < incubus.cpu.Powers.Values.Count; i++)
+				if (incubus.cpu.Powers != null)
+				{
+					for (int i = 0; i < incubus.cpu.Powers.Values.Count; i++)
+					{
+						Data temp = new Data();
+						temp.Name = "Core#" + i;
+						temp.Value = incubus.cpu.Powers.Values[i];
+						temp.MaxValue = incubus.cpu.Powers.MaxValues[i];
+						CPUPowers.Children.Add(temp);
+					}
+				}
+				else
 				{
 					Data temp = new Data();
-					temp.Name = "Core#" + i;
-					temp.Value = incubus.cpu.Powers.Values[i];
-					temp.MaxValue = incubus.cpu.Powers.MaxValues[i];
+					temp.Name = "Пусто";
+					temp.Value = "";
+					temp.MaxValue = "";
 					CPUPowers.Children.Add(temp);
 				}
+
+				CPU.Children.Add(CPUTemp);
+				CPU.Children.Add(CPUClocks);
+				CPU.Children.Add(CPULoad);
+				CPU.Children.Add(CPUPowers);
+
+				PC.Children.Add(CPU);
 			}
-			else
+
+
+			if (incubus.gpu != null)
 			{
-				Data temp = new Data();
-				temp.Name = "Пусто";
-				temp.Value = "";
-				temp.MaxValue = "";
-				CPUPowers.Children.Add(temp);
-			}
+				Data GPU = new Data();
+				GPU.Name = "Видеокарта";
+				GPU.Value = incubus.gpu.Model;
+				GPU.Children = new List<Data>();
 
-			CPU.Children.Add(CPUTemp);
-			CPU.Children.Add(CPUClocks);
-			CPU.Children.Add(CPULoad);
-			CPU.Children.Add(CPUPowers);
+				Data GPUTemp = new Data();
+				GPUTemp.Name = "Температура";
+				GPUTemp.Children = new List<Data>();
 
-			PC.Children.Add(CPU);
-
-			Data GPU = new Data();
-			GPU.Name = "Видеокарта";
-			GPU.Value = incubus.gpu.Model;
-			GPU.Children = new List<Data>();
-
-			Data GPUTemp = new Data();
-			GPUTemp.Name = "Температура";
-			GPUTemp.Children = new List<Data>();
-
-			if (incubus.gpu.Temperature != null)
-			{
-				for (int i = 0; i < incubus.gpu.Temperature.Values.Count; i++)
+				if (incubus.gpu.Temperature != null)
+				{
+					for (int i = 0; i < incubus.gpu.Temperature.Values.Count; i++)
+					{
+						Data temp = new Data();
+						temp.Name = "Core#" + i;
+						temp.Value = incubus.gpu.Temperature.Values[i];
+						temp.MaxValue = incubus.gpu.Temperature.MaxValues[i];
+						GPUTemp.Children.Add(temp);
+					}
+				}
+				else
 				{
 					Data temp = new Data();
-					temp.Name = "Core#" + i;
-					temp.Value = incubus.gpu.Temperature.Values[i];
-					temp.MaxValue = incubus.gpu.Temperature.MaxValues[i];
+					temp.Name = "Пусто";
+					temp.Value = "";
+					temp.MaxValue = "";
 					GPUTemp.Children.Add(temp);
 				}
-			}
-			else
-			{
-				Data temp = new Data();
-				temp.Name = "Пусто";
-				temp.Value = "";
-				temp.MaxValue = "";
-				GPUTemp.Children.Add(temp);
-			}
 
-			Data GPUClocks = new Data();
-			GPUClocks.Name = "Clocks";
-			GPUClocks.Children = new List<Data>();
+				Data GPUClocks = new Data();
+				GPUClocks.Name = "Clocks";
+				GPUClocks.Children = new List<Data>();
 
-			if (incubus.gpu.Clocks != null)
-			{
-				for (int i = 0; i < incubus.gpu.Clocks.Values.Count; i++)
+				if (incubus.gpu.Clocks != null)
+				{
+					for (int i = 0; i < incubus.gpu.Clocks.Values.Count; i++)
+					{
+						Data temp = new Data();
+						temp.Name = "Core#" + i;
+						temp.Value = incubus.gpu.Clocks.Values[i];
+						temp.MaxValue = incubus.gpu.Clocks.MaxValues[i];
+						GPUClocks.Children.Add(temp);
+					}
+				}
+				else
 				{
 					Data temp = new Data();
-					temp.Name = "Core#" + i;
-					temp.Value = incubus.gpu.Clocks.Values[i];
-					temp.MaxValue = incubus.gpu.Clocks.MaxValues[i];
+					temp.Name = "Пусто";
+					temp.Value = "";
+					temp.MaxValue = "";
 					GPUClocks.Children.Add(temp);
 				}
-			}
-			else
-			{
-				Data temp = new Data();
-				temp.Name = "Пусто";
-				temp.Value = "";
-				temp.MaxValue = "";
-				GPUClocks.Children.Add(temp);
-			}
 
-			Data GPULoad = new Data();
-			GPULoad.Name = "Load";
-			GPULoad.Children = new List<Data>();
+				Data GPULoad = new Data();
+				GPULoad.Name = "Load";
+				GPULoad.Children = new List<Data>();
 
-			if (incubus.gpu.Load != null)
-			{
-				for (int i = 0; i < incubus.gpu.Load.Values.Count; i++)
+				if (incubus.gpu.Load != null)
+				{
+					for (int i = 0; i < incubus.gpu.Load.Values.Count; i++)
+					{
+						Data temp = new Data();
+						temp.Name = "Core#" + i;
+						temp.Value = incubus.gpu.Load.Values[i];
+						temp.MaxValue = incubus.gpu.Load.MaxValues[i];
+						GPULoad.Children.Add(temp);
+					}
+				}
+				else
 				{
 					Data temp = new Data();
-					temp.Name = "Core#" + i;
-					temp.Value = incubus.gpu.Load.Values[i];
-					temp.MaxValue = incubus.gpu.Load.MaxValues[i];
+					temp.Name = "Пусто";
+					temp.Value = "";
+					temp.MaxValue = "";
 					GPULoad.Children.Add(temp);
 				}
-			}
-			else
-			{
-				Data temp = new Data();
-				temp.Name = "Пусто";
-				temp.Value = "";
-				temp.MaxValue = "";
-				GPULoad.Children.Add(temp);
-			}
 
-			Data GPUFans = new Data();
-			GPUFans.Name = "Fans";
-			GPUFans.Children = new List<Data>();
+				Data GPUFans = new Data();
+				GPUFans.Name = "Fans";
+				GPUFans.Children = new List<Data>();
 
-			if (incubus.gpu.Fans != null)
-			{
-				for (int i = 0; i < incubus.gpu.Fans.Values.Count; i++)
+				if (incubus.gpu.Fans != null)
+				{
+					for (int i = 0; i < incubus.gpu.Fans.Values.Count; i++)
+					{
+						Data temp = new Data();
+						temp.Name = "Кулер#" + i;
+						temp.Value = incubus.gpu.Fans.Values[i];
+						temp.MaxValue = incubus.gpu.Fans.MaxValues[i];
+						GPUFans.Children.Add(temp);
+					}
+				}
+				else
 				{
 					Data temp = new Data();
-					temp.Name = "Кулер#" + i;
-					temp.Value = incubus.gpu.Fans.Values[i];
-					temp.MaxValue = incubus.gpu.Fans.MaxValues[i];
+					temp.Name = "Пусто";
+					temp.Value = "";
+					temp.MaxValue = "";
 					GPUFans.Children.Add(temp);
 				}
+
+				GPU.Children.Add(GPUTemp);
+				GPU.Children.Add(GPUClocks);
+				GPU.Children.Add(GPULoad);
+				GPU.Children.Add(GPUFans);
+
+				PC.Children.Add(GPU);
 			}
-			else
-			{
-				Data temp = new Data();
-				temp.Name = "Пусто";
-				temp.Value = "";
-				temp.MaxValue = "";
-				GPUFans.Children.Add(temp);
-			}
-
-			GPU.Children.Add(GPUTemp);
-			GPU.Children.Add(GPUClocks);
-			GPU.Children.Add(GPULoad);
-			GPU.Children.Add(GPUFans);
-
-			PC.Children.Add(GPU);
-
-			Data Disks = new Data();
-			Disks.Name = "Жесткие диски";
-			Disks.Children = new List<Data>();
 
 			if (incubus.disks != null)
 			{
-				for (int i = 0; i < incubus.disks.Count; i++)
+				Data Disks = new Data();
+				Disks.Name = "Жесткие диски";
+				Disks.Children = new List<Data>();
+
+				if (incubus.disks != null)
+				{
+					for (int i = 0; i < incubus.disks.Count; i++)
+					{
+						Data temp = new Data();
+						temp.Name = incubus.disks[i].Name;
+						temp.Value = incubus.disks[i].TotalFreeSpace;
+						temp.MaxValue = incubus.disks[i].TotalSize;
+						Disks.Children.Add(temp);
+					}
+				}
+				else
 				{
 					Data temp = new Data();
-					temp.Name = incubus.disks[i].Name;
-					temp.Value = incubus.disks[i].TotalFreeSpace;
-					temp.MaxValue = incubus.disks[i].TotalSize;
+					temp.Name = "Пусто";
+					temp.Value = "";
+					temp.MaxValue = "";
 					Disks.Children.Add(temp);
 				}
-			}
-			else
-			{
-				Data temp = new Data();
-				temp.Name = "Пусто";
-				temp.Value = "";
-				temp.MaxValue = "";
-				Disks.Children.Add(temp);
-			}
 
-			PC.Children.Add(Disks);
+				PC.Children.Add(Disks);
+			}
 
 			return PC;
 		}
