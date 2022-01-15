@@ -1,25 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
-using System.Net.Http;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using Newtonsoft.Json;
 using System.Net;
+using System.Net.Http;
+using System.Threading;
+using System.Windows;
 using MahApps.Metro.Controls;
-using System.Collections.ObjectModel;
-using ControlzEx.Standard;
 
 namespace SuccubusClient
 {
@@ -73,7 +61,7 @@ namespace SuccubusClient
 			}
 		}
 
-		private void worker_RunWorkerCompleted(object sender,RunWorkerCompletedEventArgs e)
+		private void worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
 		{
 
 		}
@@ -106,7 +94,7 @@ namespace SuccubusClient
 				var incubusresult = await result.Content.ReadAsAsync<IEnumerable<IncubusData>>();
 
 				IncubusList.Clear();
-				foreach(IncubusData data in incubusresult)
+				foreach (IncubusData data in incubusresult)
 				{
 					Incubus incubus = new Incubus();
 					incubus = DataConvertor.ConvertToIncubus(data);
@@ -115,33 +103,33 @@ namespace SuccubusClient
 				}
 
 
-				this.BeginInvoke((Action)(() => UpdateContext())); 
-					
+				this.BeginInvoke((Action)(() => UpdateContext()));
+
 			}
 			catch (HttpRequestException ex)
 			{
 				ServerOnline = false;
 			}
 		}
-		
+
 
 		private void UpdateContext()
 		{
-			foreach(Incubus incubus in IncubusList)
+			foreach (Incubus incubus in IncubusList)
 			{
 				Data FindData = ViewModel.Collection.FirstOrDefault(x => x.Name == incubus.Name);
 				if (FindData != null)
 				{
-					foreach(Data data in FindData.Children)
+					foreach (Data data in FindData.Children)
 					{
-						if(data.Name == "Процессор")
+						if (data.Name == "Процессор")
 						{
 							data.Value = incubus.cpu.Model;
-							foreach(Data cpuData in data.Children)
+							foreach (Data cpuData in data.Children)
 							{
-								if(cpuData.Name == "Температура")
+								if (cpuData.Name == "Температура")
 								{
-									for(int i = 0; i < cpuData.Children.Count; i++)
+									for (int i = 0; i < cpuData.Children.Count; i++)
 									{
 										cpuData.Children[i].Value = incubus.cpu.Temperature.Values[i];
 										cpuData.Children[i].MaxValue = incubus.cpu.Temperature.MaxValues[i];
@@ -225,15 +213,15 @@ namespace SuccubusClient
 							for (int i = 0; i < data.Children.Count; i++)
 							{
 								data.Children[i].Name = incubus.disks[i].Name;
-								data.Children[i].Value = incubus.disks[i].TotalFreeSpace;
-								data.Children[i].MaxValue = incubus.disks[i].TotalSize;
+								data.Children[i].Value = DataConvertor.FormatBytes(incubus.disks[i].TotalFreeSpace);
+								data.Children[i].MaxValue = DataConvertor.FormatBytes(incubus.disks[i].TotalSize);
 							}
 						}
 					}
 				}
 				else
 				{
-					if(incubus.cpu!=null)
+					if (incubus.cpu != null)
 						ViewModel.Collection.Add(InitIncubusContext(incubus));
 				}
 			}
@@ -242,23 +230,15 @@ namespace SuccubusClient
 			foreach (Data data in ViewModel.Collection)
 			{
 				Incubus FindIncubus = IncubusList.FirstOrDefault(x => x.Name == data.Name);
-				if (FindIncubus==null)
+				if (FindIncubus == null)
 				{
 					DeleteData.Add(data);
 				}
 			}
 
-			foreach(Data data in DeleteData)
+			foreach (Data data in DeleteData)
 			{
 				ViewModel.Collection.Remove(data);
-			}
-		}
-
-		private void InitContext()
-		{
-			foreach (Incubus incubus in IncubusList)
-			{
-				ViewModel.Collection.Add(InitIncubusContext(incubus));
 			}
 		}
 
@@ -274,7 +254,8 @@ namespace SuccubusClient
 
 			PC.Children.Add(MAC);
 
-			if (incubus.cpu != null) {
+			if (incubus.cpu != null)
+			{
 				Data CPU = new Data();
 				CPU.Name = "Процессор";
 				CPU.Value = incubus.cpu.Model;
@@ -509,8 +490,8 @@ namespace SuccubusClient
 					{
 						Data temp = new Data();
 						temp.Name = incubus.disks[i].Name;
-						temp.Value = incubus.disks[i].TotalFreeSpace;
-						temp.MaxValue = incubus.disks[i].TotalSize;
+						temp.Value = DataConvertor.FormatBytes(incubus.disks[i].TotalFreeSpace);
+						temp.MaxValue = DataConvertor.FormatBytes(incubus.disks[i].TotalSize);
 						Disks.Children.Add(temp);
 					}
 				}

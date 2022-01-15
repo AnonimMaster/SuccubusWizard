@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Newtonsoft.Json;
-using System.Xml.Linq;
-using SuccubusClient;
 
 namespace SuccubusClient
 {
@@ -28,6 +22,20 @@ namespace SuccubusClient
 			data.data = JsonConvert.SerializeObject(incubus);
 
 			return data;
+		}
+
+		public static string FormatBytes(string bytes)
+		{
+			string[] Suffix = { "B", "KB", "MB", "GB", "TB" };
+			int i;
+			double dblSByte = Convert.ToDouble(bytes);
+			double DoubleBytes = Convert.ToDouble(bytes);
+			for (i = 0; i < Suffix.Length && DoubleBytes >= 1024; i++, DoubleBytes /= 1024)
+			{
+				dblSByte = DoubleBytes / 1024.0;
+			}
+
+			return String.Format("{0:0.##} {1}", dblSByte, Suffix[i]);
 		}
 	}
 }

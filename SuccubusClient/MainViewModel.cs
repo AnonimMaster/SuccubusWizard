@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SuccubusClient;
 
 namespace SuccubusClient
 {
@@ -14,7 +9,7 @@ namespace SuccubusClient
 		public ObservableCollection<Data> Collection { get; set; }
 	}
 
-	public class Data: INotifyPropertyChanged
+	public class Data : INotifyPropertyChanged
 	{
 		public string _Name;
 		public string Name

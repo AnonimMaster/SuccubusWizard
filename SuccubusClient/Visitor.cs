@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using OpenHardwareMonitor.Hardware;
+﻿using OpenHardwareMonitor.Hardware;
 
 namespace SuccubusClient
 {
-	class Visitor: IVisitor
+	class Visitor : IVisitor
 	{
 		public void VisitComputer(IComputer computer)
 		{
