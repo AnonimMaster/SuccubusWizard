@@ -1,0 +1,9 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>net452;net5.0-windows</TargetFrameworks>
+    <UseWPF>true</UseWPF>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Authors>Shady</Authors>
+    <Version>1.0.0.1</Version>
+  </PropertyGroup>
+</Project>

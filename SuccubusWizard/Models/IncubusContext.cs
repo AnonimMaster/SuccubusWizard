@@ -8,7 +8,7 @@ namespace SuccubusWizard.Models
 {
 	public class IncubusContext : DbContext
 	{
-        public DbSet<Incubus> IncubusList { get; set; }
+        public DbSet<IncubusData> IncubusList { get; set; }
         public IncubusContext(DbContextOptions<IncubusContext> options)
             : base(options)
         {

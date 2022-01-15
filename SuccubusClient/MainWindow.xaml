@@ -1,0 +1,73 @@
+﻿<mah:MetroWindow x:Class="SuccubusClient.MainWindow"
+		xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		xmlns:local="clr-namespace:SuccubusClient"
+		xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+		xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        xmlns:treeListView="clr-namespace:TreeListView;assembly=TreeListView"
+		GlowBrush="{DynamicResource MahApps.Brushes.Gray}"
+		mc:Ignorable="d"
+        Icon="{iconPacks:MaterialDesignImage Kind=DesktopWindows, Brush=White}"
+                 
+                 
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        Background="{DynamicResource MaterialDesignPaper}"
+        TextElement.FontWeight="Medium"
+        TextElement.FontSize="14"
+        FontFamily="{materialDesign:MaterialDesignFont}"
+                 
+		Title="Succubus Client" Height="450" Width="800" Loaded="Window_Loaded" Closing="Window_Closing">
+
+    <mah:MetroWindow.IconTemplate>
+        <DataTemplate>
+            <iconPacks:PackIconMaterialDesign Kind="DesktopWindows" 
+                                       Width="16" 
+                                       Height="16"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"
+                                       Foreground="{DynamicResource MahApps.Brushes.IdealForeground}"/>
+        </DataTemplate>
+    </mah:MetroWindow.IconTemplate>
+
+    <mah:MetroWindow.LeftWindowCommands>
+        <mah:WindowCommands>
+
+            <BlockUIContainer>
+                <iconPacks:PackIconModern Width="22"
+                                  Height="22"
+                                  Kind="SocialGithubOctocat" />
+            </BlockUIContainer>
+        </mah:WindowCommands>
+    </mah:MetroWindow.LeftWindowCommands>
+
+    <Grid>
+        <treeListView:TreeListView
+            ChildrenPropertyName="Children"
+            Style="{StaticResource VirtualizedMetroTreeListView}">
+            <treeListView:TreeListView.View>
+                <GridView>
+                    <GridViewColumn Width="200" Header="Имя">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Foreground="#e74c3c" Text="{Binding Name}" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn
+                        Width="100"
+                        DisplayMemberBinding="{Binding Value}"
+                        Header="Значение" />
+                    <GridViewColumn
+                        Width="200"
+                        DisplayMemberBinding="{Binding MaxValue}"
+                        Header="Макс. Значение" />
+                </GridView>
+            </treeListView:TreeListView.View>
+        </treeListView:TreeListView>
+        <Label x:Name ="TESTLABEL" Content="Label" HorizontalAlignment="Left" Margin="456,0,-368,0" Width="100"/>
+        <Label x:Name="ServerLabel" Content="" HorizontalAlignment="Left" Margin="682,10,0,0" VerticalAlignment="Top" Width="100"/>
+    </Grid>
+</mah:MetroWindow>

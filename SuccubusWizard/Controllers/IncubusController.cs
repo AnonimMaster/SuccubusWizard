@@ -21,15 +21,15 @@ namespace SuccubusWizard.Controllers
 		}
 
 		[HttpGet]
-		public async Task<ActionResult<IEnumerable<Incubus>>> GetIncubusList()
+		public async Task<ActionResult<IEnumerable<IncubusData>>> GetIncubusList()
 		{
 			return await db.IncubusList.ToListAsync();
 		}
 
 		[HttpGet("{MAC}")]
-		public async Task<ActionResult<Incubus>> Get(string MAC)
+		public async Task<ActionResult<IncubusData>> Get(string MAC)
 		{
-			Incubus incubus = await db.IncubusList.FirstOrDefaultAsync(x => x.MAC == MAC);
+			IncubusData incubus = await db.IncubusList.FirstOrDefaultAsync(x => x.MAC == MAC);
 			if (incubus == null)
 				return NotFound();
 			return new ObjectResult(incubus);
@@ -38,61 +38,71 @@ namespace SuccubusWizard.Controllers
 		[HttpGet]
 		public async Task<ActionResult<string>> GetServerStatus()
 		{
-			Incubus incubus = await db.IncubusList.FirstOrDefaultAsync(x => x.Id == 0);
-			return Ok(1);
+			IncubusData incubus = await db.IncubusList.FirstOrDefaultAsync(x => x.Id == 0);
+			return Ok();
 		}
 
 
 		[HttpPost]
-		public async Task<ActionResult<Incubus>> ConnectIncubus(Incubus incubus)
+		public async Task<ActionResult<IncubusData>> ConnectIncubus(IncubusData incubus)
 		{
 			if (incubus == null)
 				return BadRequest();
 
-			Incubus incubusFind = await db.IncubusList.FirstOrDefaultAsync(x => x.MAC == incubus.MAC);
+			IncubusData incubusFind = await db.IncubusList.FirstOrDefaultAsync(x => x.MAC == incubus.MAC);
 
 			//Если он был подключён до этого, то пусть обновит данные о себе.
 			if (incubusFind != null)
 			{
-				db.Update(incubus);
+				incubusFind.Data = incubus.Data;
 				await db.SaveChangesAsync();
 				return Ok(incubus);
 			}
-
-			db.IncubusList.Add(incubus);
-			await db.SaveChangesAsync();
-			return Ok(incubus);
-
+			else
+			{
+				db.IncubusList.Add(incubus);
+				await db.SaveChangesAsync();
+				return Ok(incubus);
+			}
 		}
 
-		[HttpDelete]
-		public async Task<ActionResult<Incubus>> DisconnectIncubus(Incubus incubus)
+		[HttpPost]
+		public async Task<ActionResult<IncubusData>> DisconnectIncubus(IncubusData incubus)
 		{
-			Incubus FindIncubus = db.IncubusList.FirstOrDefault(i => i.Name == incubus.Name & i.MAC == incubus.MAC);
+			if (incubus == null)
+			{
+				return BadRequest();
+			}
+
+			IncubusData FindIncubus = db.IncubusList.FirstOrDefault(i => i.MAC == incubus.MAC);
 			if (FindIncubus == null)
 			{
 				return NotFound();
 			}
+
 			db.IncubusList.Remove(FindIncubus);
 			await db.SaveChangesAsync();
 			return Ok(FindIncubus);
 		}
 
-		[HttpPut]
-		public async Task<ActionResult<Incubus>> UpdateIncubus(Incubus incubus)
+		[HttpPost]
+		public async Task<ActionResult<IncubusData>> UpdateIncubus(IncubusData incubus)
 		{
 			if (incubus == null)
 			{
 				return BadRequest();
 			}
-			if (!db.IncubusList.Any(x => x.MAC == incubus.MAC))
+
+			IncubusData FindIncubus = db.IncubusList.FirstOrDefault(x => x.MAC == incubus.MAC);
+			if (FindIncubus == null)
 			{
 				return NotFound();
 			}
 
-			db.Update(incubus);
+			FindIncubus.Data = incubus.Data;
+
 			await db.SaveChangesAsync();
-			return Ok(incubus);
+			return new ObjectResult(FindIncubus);
 		}
 	}
 }
