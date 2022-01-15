@@ -39,7 +39,7 @@ namespace IncubusService
 	public class HardwareDisk
 	{
 		public string Name { get; set; }
-		public string TotalFreeSpace { get; set; }
-		public string TotalSize { get; set; }
+		public string TotalFreeSpace { get; set; }	//Байты
+		public string TotalSize { get; set; }   //Байты
 	}
 }

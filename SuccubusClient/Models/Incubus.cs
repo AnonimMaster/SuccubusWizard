@@ -7,7 +7,6 @@ namespace SuccubusClient
 
 	public class Incubus
 	{
-		public int Id { get; set; }
 		public string Name { get; set; }
 		public string MAC { get; set; }
 		public CPU cpu { get; set; }

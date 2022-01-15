@@ -46,6 +46,7 @@
     <Grid>
         <treeListView:TreeListView
             ChildrenPropertyName="Children"
+            ItemsSource="{Binding Collection}"
             Style="{StaticResource VirtualizedMetroTreeListView}">
             <treeListView:TreeListView.View>
                 <GridView>
@@ -67,7 +68,6 @@
                 </GridView>
             </treeListView:TreeListView.View>
         </treeListView:TreeListView>
-        <Label x:Name ="TESTLABEL" Content="Label" HorizontalAlignment="Left" Margin="456,0,-368,0" Width="100"/>
         <Label x:Name="ServerLabel" Content="" HorizontalAlignment="Left" Margin="682,10,0,0" VerticalAlignment="Top" Width="100"/>
     </Grid>
 </mah:MetroWindow>

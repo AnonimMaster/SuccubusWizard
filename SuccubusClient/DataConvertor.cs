@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 using System.Xml.Linq;
 using SuccubusClient;
 
-namespace IncubusServiceClietn
+namespace SuccubusClient
 {
 	public static class DataConvertor
 	{
